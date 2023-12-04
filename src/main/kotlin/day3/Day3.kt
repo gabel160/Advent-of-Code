@@ -38,35 +38,17 @@ fun checkGameReturnValidNumbers(game: Game, gear: Boolean) : MutableList<Int> {
         var downSubString = ""
         var multiplication = 0
 
-
-//        if(number.first-1 == -1){
-//            if(game.up.length != 0){
-//                upSubstring = game.up.substring(0, number.last + 2)
-//            }
-//            midSubString = game.mid.substring(0, number.last + 2)
-//            if(game.down.length != 0){
-//                downSubString = game.down.substring(0, number.last + 2)
-//            }
-//        } else if (number.last + 2 > game.mid.length){
-//            if(game.up.length != 0){
-//                upSubstring = game.up.substring(number.first - 1, number.last -1)
-//            }
-//            midSubString = game.mid.substring(number.first - 1, number.last -1)
-//            if(game.down.length != 0){
-//                downSubString = game.down.substring(number.first - 1, number.last -1)
-//            }
-//        } else {
         upSubstring = game.up.substring(number.first - 1, number.last + 2)
         midSubString = game.mid.substring(number.first - 1, number.last + 2)
         downSubString = game.down.substring(number.first - 1, number.last + 2)
 
-        }
         if(!gear){
             if(checkSymbolRegex.find(upSubstring) != null) match = true
             if(checkSymbolRegex.find(midSubString) != null) match = true
             if(checkSymbolRegex.find(downSubString) != null) match = true
         } else {
             var count = 0
+
             val upMatch = checkGearRegex.findAll(upSubstring)
             val midMatch = checkGearRegex.findAll(midSubString)
             val downMatch = checkGearRegex.findAll(downSubString)
@@ -75,18 +57,49 @@ fun checkGameReturnValidNumbers(game: Game, gear: Boolean) : MutableList<Int> {
             count += downMatch.count()
             if(count == 2) {
                 match = true
-                for (submatch in upMatch){
-                    if(multiplication == 0) multiplication = extractNumber(game.up , number)
-                    else multiplication *= extractNumber(game.up ,number)
+                var quickAndDirty = true
+                for (x in IntRange(-1, 1)){
+                    if(game.up[x+number.first].isDigit()){
+                        if(quickAndDirty){
+                            if(multiplication == 0) multiplication = extractNumber(game.up, IntRange((x+number.first),(x+number.first)))
+                            else multiplication *= extractNumber(game.up, IntRange((x+number.first),(x+number.first)))
+                            quickAndDirty = false
+                        }
+                    } else quickAndDirty = true
                 }
-                for (submatch in midMatch){
-                    if(multiplication == 0) multiplication = extractNumber(game.mid ,number)
-                    else multiplication *= extractNumber(game.mid ,number)
+                quickAndDirty = true
+                for (x in IntRange(-1, 1)){
+                    if(game.mid[x+number.first].isDigit()){
+                        if(quickAndDirty) {
+                            if(multiplication == 0) multiplication = extractNumber(game.mid, IntRange((x+number.first),(x+number.first)))
+                            else multiplication *= extractNumber(game.mid, IntRange((x+number.first),(x+number.first)))
+                            quickAndDirty = false
+                        }
+                    } else quickAndDirty = true
                 }
-                for (submatch in downMatch){
-                    if(multiplication == 0) multiplication = extractNumber(game.down ,number)
-                    else multiplication *= extractNumber(game.down ,number)
+                quickAndDirty = true
+                for (x in IntRange(-1, 1)){
+                    if(game.down[x+number.first].isDigit()){
+                        if(quickAndDirty){
+                            if(multiplication == 0) multiplication = extractNumber(game.down, IntRange((x+number.first),(x+number.first)))
+                            else multiplication *= extractNumber(game.down, IntRange((x+number.first),(x+number.first)))
+                            quickAndDirty = false
+                        }
+                    } else quickAndDirty = true
                 }
+
+//                for (submatch in upMatch){
+//                    if(multiplication == 0) multiplication = extractNumber(game.up , number)
+//                    else multiplication *= extractNumber(game.up ,number)
+//                }
+//                for (submatch in midMatch){
+//                    if(multiplication == 0) multiplication = extractNumber(game.mid ,number)
+//                    else multiplication *= extractNumber(game.mid ,number)
+//                }
+//                for (submatch in downMatch){
+//                    if(multiplication == 0) multiplication = extractNumber(game.down ,number)
+//                    else multiplication *= extractNumber(game.down ,number)
+//                }
             }
         }
 

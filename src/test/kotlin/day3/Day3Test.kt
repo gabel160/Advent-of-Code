@@ -58,6 +58,16 @@ class Day3Test {
             input.lines(), true
         )
 
-        assertThat(result).isEqualTo(4361)
+        assertThat(result).isEqualTo(467835)
+    }
+    @Test
+    fun `part 2 - full input`() {
+        val input = readInput(3)
+
+        val result = getResult(
+            input.lines(), true
+        )
+
+        assertThat(result).isEqualTo(527446)
     }
 }
